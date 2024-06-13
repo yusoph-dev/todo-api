@@ -3,6 +3,12 @@
 const fs = require('fs');
 const path = require('path');
 
+const certPath = path.join(__dirname, '../ssl/DigiCert.crt.pem');
+
+const sslConfig = {
+  rejectUnauthorized: true,
+  ca: fs.readFileSync(certPath)
+};
 
 /** @type {import('@adonisjs/framework/src/Env')} */
 const Env = use('Env')
@@ -81,7 +87,8 @@ module.exports = {
       port: Env.get('DB_PORT', ''),
       user: Env.get('DB_USER', 'root'),
       password: Env.get('DB_PASSWORD', ''),
-      database: Env.get('DB_DATABASE', 'adonis')
+      database: Env.get('DB_DATABASE', 'adonis'),
+      ssl: sslConfig
     },
     debug: Env.get('DB_DEBUG', false)
   }
